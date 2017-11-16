@@ -462,10 +462,16 @@ shouldWaitForLoadingOfRequestedResource:(AVAssetResourceLoadingRequest *)loading
 {
     if (!self.isStalled) {
         
-        if (self.player.rate != 0
-            && self.player.timeControlStatus == AVPlayerTimeControlStatusWaitingToPlayAtSpecifiedRate
-            && [self.player.reasonForWaitingToPlay isEqualToString:AVPlayerWaitingToMinimizeStallsReason]) {
-            [self.player playImmediatelyAtRate:self.player.rate];
+        if (@available(iOS 10, *)) {
+            if (self.player.rate != 0
+                && self.player.timeControlStatus == AVPlayerTimeControlStatusWaitingToPlayAtSpecifiedRate
+                && [self.player.reasonForWaitingToPlay isEqualToString:AVPlayerWaitingToMinimizeStallsReason]) {
+                [self.player playImmediatelyAtRate:self.player.rate];
+            }
+        } else {
+            if (self.player.rate != 0) {
+                [self.player play];
+            }
         }
         
         return;
