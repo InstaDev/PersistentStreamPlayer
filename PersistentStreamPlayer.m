@@ -462,7 +462,7 @@ shouldWaitForLoadingOfRequestedResource:(AVAssetResourceLoadingRequest *)loading
 {
     if (!self.isStalled) {
         
-        if (@available(iOS 10, *)) {
+        if ([self.player respondsToSelector:@selector(timeControlStatus)]) {
             if (self.player.rate != 0
                 && self.player.timeControlStatus == AVPlayerTimeControlStatusWaitingToPlayAtSpecifiedRate
                 && [self.player.reasonForWaitingToPlay isEqualToString:AVPlayerWaitingToMinimizeStallsReason]) {
